@@ -1,34 +1,42 @@
-import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import "./HeroesList.css"
+import { fetchHeroes } from '../../slices/heroesSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
-import { useCallback } from 'react';
+import { createSelector } from 'reselect';
+import { CSSTransition } from 'react-transition-group';
+
+const stateSelector = createSelector(
+    (state) => state.filtersRed.currentFilter,
+    (state) => state.heroesRed.heroes,
+    (state) => state.heroesRed.heroesLoadingStatus, 
+    
+    (currentFilter, heroes, loadingStatus) => {
+        let result;
+
+        if (currentFilter === "all") {
+            console.log("render")
+            result = heroes;
+        } else {
+            result = heroes.filter(item => item.element === currentFilter)
+        };
+
+        return {loadingStatus, result}
+    })
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
-    const currentFilter = useSelector(state => state.currentFilter);
+    const {result, loadingStatus} = useSelector(stateSelector)
     const dispatch = useDispatch();
-    const {request} = useHttp();
-
-    const filter = useCallback((heroes, element) => {
-        if (element === "all") return heroes;
-        return heroes.filter(item => item.element === element)
-    }, [])
 
     useEffect(() => {
-        dispatch(heroesFetching());
-        request("http://localhost:3001/heroes")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+        dispatch(fetchHeroes());
         // eslint-disable-next-line
     }, []);
 
-    if (heroesLoadingStatus === "loading") {
+    if (loadingStatus === "loading") {
         return <Spinner/>;
-    } else if (heroesLoadingStatus === "error") {
+    } else if (loadingStatus === "error") {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
 
@@ -38,16 +46,28 @@ const HeroesList = () => {
         }
 
         return arr.map(({id, ...props}) => {
-            return <HeroesListItem key={id} id={id} {...props}/>
+            return (
+                <CSSTransition
+                    mountOnEnter
+                    unmountOnExit
+                    key={id}
+                    timeout={500}
+                    classNames="hero"
+                    in={true}
+                    appear={true}>
+                    <HeroesListItem id={id} {...props}/>
+                </CSSTransition>
+            )
         })
     }
 
-    const elements = renderHeroesList(filter(heroes, currentFilter));
+    const elements = renderHeroesList(result);
 
     return (
         <ul>
             {elements}
         </ul>
+           
     )
 }
 

@@ -1,19 +1,14 @@
 
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { heroesPost } from '../../actions';
-import { useEffect, useState } from "react";
+import { post } from '../../slices/heroesSlice';
+import { useSelector } from 'react-redux';
+import { postHeroToDB } from '../../slices/heroesSlice';
 const { v4: uuidv4 } = require('uuid');
 
 const HeroesAddForm = () => {
-    const dispatch = useDispatch(); 
-    const [filters, setFilters] = useState([]);
-
-    useEffect(() => {
-        fetch("http://localhost:3001/filters")
-            .then(data => data.json())
-            .then(data => setFilters(data))
-    }, [])
+    const dispatch = useDispatch();
+    const filters = useSelector(state => state.filtersRed.filters)
 
     const formik = useFormik({
         initialValues: {
@@ -23,16 +18,11 @@ const HeroesAddForm = () => {
         },
         onSubmit: async (values, {resetForm}) => {
             const id = uuidv4()
-            // dispatch(heroesFetching())
-            await fetch("http://localhost:3001/heroes", {
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify({...values, id})
-            })
-            dispatch(heroesPost({...values, id}))
+            const objectToPost = {...values, id};
+            
+            dispatch(postHeroToDB(objectToPost))
+            dispatch(post(objectToPost))
+
             resetForm()
         },
       });

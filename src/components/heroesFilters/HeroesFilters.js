@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
-import { filtersUpdate, filterChange } from '../../actions';
+import { useEffect } from 'react';
+import { fetchFilters } from '../../slices/filtersSlice';
+import { change } from '../../slices/filtersSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
+
 var classNames = require('classnames');
 
 const styles = {
@@ -11,18 +14,18 @@ const styles = {
     "earth": "btn-secondary"
 }
 
+const selector = createSelector(
+    state => [state.filtersRed.filters, state.filtersRed.currentFilter],
+    ([filters, currentFilter]) => ({filters, currentFilter})
+)
+
 const HeroesFilters = () => {
-    const filters = useSelector(state => state.filters)
-    const currentFilter = useSelector(state => state.currentFilter)
+    const {filters, currentFilter} = useSelector(selector)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        fetch("http://localhost:3001/filters")
-            .then(data => data.json())
-            .then(data => {
-                dispatch(filtersUpdate(data))
-            })
-    }, [])
+        dispatch(fetchFilters())
+    }, [dispatch])
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
@@ -33,16 +36,11 @@ const HeroesFilters = () => {
                             <button 
                                 key={index}
                                 className={classNames("btn", styles[item[0]], {active: currentFilter === item[0]})}
-                                onClick={() => dispatch(filterChange(item[0]))}
+                                onClick={() => dispatch(change(item[0]))}
                                     >{item[1]}
                             </button>
                         )
                     })}
-                    
-                    {/* <button className="btn btn-danger">Огонь</button>
-                    <button className="btn btn-primary">Вода</button>
-                    <button className="btn btn-success">Ветер</button>
-                    <button className="btn btn-secondary">Земля</button> */}
                 </div>
             </div>
         </div>

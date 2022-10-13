@@ -1,40 +1,28 @@
 {
   "heroes": [
     {
-      "name": "Илья",
-      "description": "Я умею жарить шашлыки!",
-      "element": "wind",
-      "id": "2ac5a69d-951f-4895-a371-7545d31c1904"
-    },
-    {
-      "name": "Паша",
-      "description": "Я имею жарить твою маму!",
-      "element": "water",
-      "id": "50d498fe-09a5-4111-a4e7-e4778fa6d1ce"
-    },
-    {
-      "name": "Maksim",
-      "description": "Fuck",
-      "element": "water",
-      "id": "f07cd32f-0b22-4fa0-9e19-fab57bd56731"
-    },
-    {
-      "name": "sdfsdf",
-      "description": "fdsfd",
-      "element": "fire",
-      "id": "6e725026-71b6-4a95-9198-bb4400678e72"
-    },
-    {
       "name": "Максим",
-      "description": "итмст",
-      "element": "earth",
-      "id": "48717d17-db3a-47c0-b3e2-7149eccaeae4"
+      "description": "Ничего",
+      "element": "fire",
+      "id": "4110773d-60ce-4b13-b497-d04f8b540ff3"
     },
     {
-      "name": "Maksim",
-      "description": "выавыа",
-      "element": "wind",
-      "id": "d9a9702f-ff05-489f-b575-3c83ddef82f8"
+      "name": "Илья",
+      "description": "Ничего",
+      "element": "water",
+      "id": "47150461-8422-4d4b-9fe9-318bbebf40d2"
+    },
+    {
+      "name": "Таня",
+      "description": "Я умею готовить",
+      "element": "fire",
+      "id": "634c5335-ea08-4960-931f-7bca121efede"
+    },
+    {
+      "name": "Катя",
+      "description": "Петь",
+      "element": "earth",
+      "id": "8e8f9179-ce8b-4c33-a9a3-1295c0a650ac"
     }
   ],
   "filters": [

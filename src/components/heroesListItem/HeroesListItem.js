@@ -1,5 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
-import { heroesDelete } from "../../actions";
+import { useDispatch } from "react-redux";
+import { _delete } from "../../slices/heroesSlice";
+import img from  "../../assets/hero.jpg"
 
 const HeroesListItem = ({id, name, description, element}) => {
 
@@ -23,7 +24,7 @@ const HeroesListItem = ({id, name, description, element}) => {
     }
 
     const deleteItem = async (id) => {
-        dispatch(heroesDelete(id))
+        dispatch(_delete(id))
         fetch(`http://localhost:3001/heroes/${id}`, {
             method: "DELETE"
         })
@@ -34,7 +35,7 @@ const HeroesListItem = ({id, name, description, element}) => {
     return (
         <li 
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>
-            <img src="http://www.stpaulsteinbach.org/wp-content/uploads/2014/09/unknown-hero.jpg" 
+            <img src={img} 
                  className="img-fluid w-25 d-inline" 
                  alt="unknown hero" 
                  style={{'objectFit': 'cover'}}/>

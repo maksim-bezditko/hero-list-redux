@@ -1,0 +1,10 @@
+.hero-appear {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.hero-appear-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 300ms ease-in;
+}

@@ -1,7 +1,5 @@
-import { useDispatch } from "react-redux";
-import { _delete } from "../../slices/heroesSlice";
 import img from  "../../assets/hero.jpg"
-
+import { useDeleteHeroMutation } from "../../apis/heroesApi";
 const HeroesListItem = ({id, name, description, element}) => {
 
     let elementClassName;
@@ -23,14 +21,16 @@ const HeroesListItem = ({id, name, description, element}) => {
             elementClassName = 'bg-warning bg-gradient';
     }
 
-    const deleteItem = async (id) => {
-        dispatch(_delete(id))
-        fetch(`http://localhost:3001/heroes/${id}`, {
-            method: "DELETE"
-        })
-    }
+    // const deleteItem = async (id) => {
+    //     dispatch(_delete(id))
+    //     fetch(`http://localhost:3001/heroes/${id}`, {
+    //         method: "DELETE"
+    //     })
+    // }
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+
+    const [deleteHero] = useDeleteHeroMutation();
 
     return (
         <li 
@@ -45,7 +45,7 @@ const HeroesListItem = ({id, name, description, element}) => {
                 <p className="card-text">{description}</p>
             </div>
             <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-                <button onClick={() => deleteItem(id)} type="button" className="btn-close btn-close" aria-label="Close"></button>
+                <button onClick={() => deleteHero(id)} type="button" className="btn-close btn-close" aria-label="Close"></button>
             </span>
         </li>
     )

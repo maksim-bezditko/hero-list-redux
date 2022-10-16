@@ -1,21 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import heroesReducer from '../slices/heroesSlice';
-import filtersReducer from '../slices/filtersSlice';
-
-const customMiddleware = (store) => (dispatch) => (action) => {
-	if (typeof action === "function") {
-		return dispatch(action())	
-	} else if (typeof action === "string") {
-		return dispatch({type: action})
-	} else {
-		return dispatch(action)
-	}
-}
+import { heroesAPI } from '../apis/heroesApi';
+import { filtersAPI } from '../apis/filtersApi';
+import filtersReducer from "../slices/filtersSlice";
 
 const store = configureStore({
-	reducer: {heroesRed: heroesReducer, filtersRed: filtersReducer},
+	reducer: {
+		[heroesAPI.reducerPath]: heroesAPI.reducer,
+		[filtersAPI.reducerPath]: filtersAPI.reducer,
+		filtersSlice: filtersReducer
+	},
 	devTools: process.env.NODE_ENV !== "production",
-	middleware: getDefaultMiddleware => [...getDefaultMiddleware(), customMiddleware] // redux-thunk is already included to getDefaultMiddleware function
+	middleware: getDefaultMiddleware => (
+		[...getDefaultMiddleware(), 
+			heroesAPI.middleware,
+			filtersAPI.middleware]
+	)
 })
 
 export default store;

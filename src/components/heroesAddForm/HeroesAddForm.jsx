@@ -1,14 +1,14 @@
-
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { post } from '../../slices/heroesSlice';
-import { useSelector } from 'react-redux';
-import { postHeroToDB } from '../../slices/heroesSlice';
+import { usePostHeroMutation } from '../../apis/heroesApi';
+import { useGetFiltersQuery } from '../../apis/filtersApi';
+
 const { v4: uuidv4 } = require('uuid');
 
 const HeroesAddForm = () => {
-    const dispatch = useDispatch();
-    const filters = useSelector(state => state.filtersRed.filters)
+
+    const {data: filters = []} = useGetFiltersQuery();
+    
+    const [postHero] = usePostHeroMutation();
 
     const formik = useFormik({
         initialValues: {
@@ -17,11 +17,8 @@ const HeroesAddForm = () => {
           element: "",
         },
         onSubmit: async (values, {resetForm}) => {
-            const id = uuidv4()
-            const objectToPost = {...values, id};
             
-            dispatch(postHeroToDB(objectToPost))
-            dispatch(post(objectToPost))
+            postHero({...values, id: uuidv4()})
 
             resetForm()
         },
